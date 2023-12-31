@@ -1,4 +1,4 @@
-package com.h2healing.schedule.repository;
+package com.h2healing.schedule.repository.repositoryUsuario;
 
 import com.h2healing.schedule.model.usuario.UsuarioModel;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -33,6 +33,8 @@ public class JWTConfiguracao  {
                         .requestMatchers(HttpMethod.POST,"/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
                         .requestMatchers(HttpMethod.GET,"/usuario").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET,"/produtos").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST,"/produtos").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
@@ -56,6 +58,4 @@ public class JWTConfiguracao  {
         source.registerCorsConfiguration("/**",corsConfiguration);
         return source;
     }
-
-
 }

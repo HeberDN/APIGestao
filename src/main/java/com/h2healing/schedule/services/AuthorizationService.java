@@ -1,6 +1,6 @@
 package com.h2healing.schedule.services;
 
-import com.h2healing.schedule.repository.UsuarioRepository;
+import com.h2healing.schedule.repository.repositoryUsuario.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

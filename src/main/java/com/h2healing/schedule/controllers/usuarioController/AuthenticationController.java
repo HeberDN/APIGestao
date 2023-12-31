@@ -1,17 +1,16 @@
-package com.h2healing.schedule.controller;
+package com.h2healing.schedule.controllers.usuarioController;
 
 import com.h2healing.schedule.model.usuario.AuthenticationDTO;
 import com.h2healing.schedule.model.usuario.LoginResponseDTO;
 import com.h2healing.schedule.model.usuario.RegisterDTO;
 import com.h2healing.schedule.model.usuario.UsuarioModel;
-import com.h2healing.schedule.repository.UsuarioRepository;
+import com.h2healing.schedule.repository.repositoryUsuario.UsuarioRepository;
 import com.h2healing.schedule.security.JWTTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import jakarta.validation.Valid;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

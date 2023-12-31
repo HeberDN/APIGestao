@@ -28,7 +28,7 @@ public class UsuarioModel implements UserDetails {
     private String telefone;
     @Column(unique = true)
     private String cpf;
-    private LocalDate dataAgendamento;
+    private LocalDate dataNascimento;
     private StatusUsuario status;
 
     private UsuarioRole role;
@@ -115,11 +115,11 @@ public class UsuarioModel implements UserDetails {
     }
 
     public LocalDate getDataAgendamento() {
-        return dataAgendamento;
+        return dataNascimento;
     }
 
     public void setDataAgendamento(LocalDate dataAgendamento) {
-        this.dataAgendamento = dataAgendamento;
+        this.dataNascimento = dataNascimento;
     }
 
     public StatusUsuario getStatus() {
@@ -139,7 +139,7 @@ public class UsuarioModel implements UserDetails {
                 ", senha='" + password + '\''+
                 ", telefone='" + telefone + '\'' +
                 ", cpf='" + cpf + '\'' +
-                ", dataAgendamento=" + dataAgendamento +
+                ", dataAgendamento=" + dataNascimento +
                 ", status=" + status +
                 '}';
     }

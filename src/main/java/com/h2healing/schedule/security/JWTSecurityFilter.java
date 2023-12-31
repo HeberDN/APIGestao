@@ -1,6 +1,6 @@
 package com.h2healing.schedule.security;
 
-import com.h2healing.schedule.repository.UsuarioRepository;
+import com.h2healing.schedule.repository.repositoryUsuario.UsuarioRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

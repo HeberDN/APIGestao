@@ -6,16 +6,16 @@ import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 public record RegistrarProdutoDTO(
-
+    @NotBlank
     String codigo,
-
+    @NotBlank
     String nomeProduto,
-
+    @NotBlank
     String unidade,
-
+    @NotNull
     BigDecimal custoUnitario,
-
+    @NotNull
     BigDecimal valorVendaUnitario,
-
+    @NotNull
     BigDecimal saldo
     ) { }

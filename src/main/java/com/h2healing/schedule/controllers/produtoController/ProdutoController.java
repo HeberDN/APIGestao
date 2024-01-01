@@ -1,5 +1,6 @@
 package com.h2healing.schedule.controllers.produtoController;
 
+import com.h2healing.schedule.model.produto.DeletarDTO;
 import com.h2healing.schedule.model.produto.ProdutoModel;
 import com.h2healing.schedule.model.produto.RegistrarProdutoDTO;
 import com.h2healing.schedule.repository.repositoryProduto.ProdutoRepository;
@@ -40,6 +41,18 @@ public class ProdutoController {
             produtoModel.setCustoUnitario(data.custoUnitario());
             produtoModel.setValorVendaUnitario(data.valorVendaUnitario());
             return ResponseEntity.ok(produtoModel);
+        }else{
+            return ResponseEntity.notFound().build();
+        }
+    }
+    @DeleteMapping
+    @Transactional
+    public ResponseEntity deletarProduto (@RequestBody @Valid DeletarDTO data){
+        Optional<ProdutoModel> optionalProdutoModel = repository.findByCodigo(data.codigo());
+        if(optionalProdutoModel.isPresent()){
+            ProdutoModel produtoModel = optionalProdutoModel.get();
+            repository.delete(produtoModel);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }else{
             return ResponseEntity.notFound().build();
         }

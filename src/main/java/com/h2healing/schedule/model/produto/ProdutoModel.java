@@ -1,5 +1,6 @@
 package com.h2healing.schedule.model.produto;
 
+import com.h2healing.schedule.model.estoque.MovimentacaoEstoqueModel;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -7,6 +8,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -32,6 +34,8 @@ public class ProdutoModel {
     private BigDecimal valorVendaUnitario;
     @Column(name = "saldo", nullable = false)
     private BigDecimal saldo;
+    @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL)
+    private List<MovimentacaoEstoqueModel> movimentacoesEstoque;
 
     public ProdutoModel (RegistrarProdutoDTO registrarProdutoDTO){
         this.codigo = registrarProdutoDTO.codigo();

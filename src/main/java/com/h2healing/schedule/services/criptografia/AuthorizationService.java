@@ -1,4 +1,4 @@
-package com.h2healing.schedule.services;
+package com.h2healing.schedule.services.criptografia;
 
 import com.h2healing.schedule.repository.repositoryUsuario.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;

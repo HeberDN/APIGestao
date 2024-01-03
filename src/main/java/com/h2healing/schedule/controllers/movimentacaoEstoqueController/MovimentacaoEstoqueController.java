@@ -2,6 +2,7 @@ package com.h2healing.schedule.controllers.movimentacaoEstoqueController;
 
 import com.h2healing.schedule.model.estoque.MovimentacaoEstoqueDTO;
 import com.h2healing.schedule.services.movimentacaoEstoque.MovimentacaoEstoqueService;
+import com.h2healing.schedule.services.movimentacaoEstoque.ProdutoNaoEncontradoException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,7 +19,20 @@ public class MovimentacaoEstoqueController {
     private MovimentacaoEstoqueService movimentacaoEstoqueService;
     @PostMapping("/entrada")
     public ResponseEntity registrarEntradaEstoque(@RequestBody @Valid MovimentacaoEstoqueDTO entradaEstoqueDTO){
-        movimentacaoEstoqueService.registrarEntradaEstoque(entradaEstoqueDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        try{
+            movimentacaoEstoqueService.registrarEntradaEstoque(entradaEstoqueDTO);
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        } catch (ProdutoNaoEncontradoException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+    @PostMapping("/saida")
+    public ResponseEntity registrarSaidaEstoque(@RequestBody @Valid MovimentacaoEstoqueDTO saidaEstoqueDTO){
+        try{
+            movimentacaoEstoqueService.registrarSaidaEstoque(saidaEstoqueDTO);
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        } catch (ProdutoNaoEncontradoException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 }

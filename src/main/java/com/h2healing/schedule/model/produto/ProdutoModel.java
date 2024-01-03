@@ -1,5 +1,6 @@
 package com.h2healing.schedule.model.produto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.h2healing.schedule.model.estoque.MovimentacaoEstoqueModel;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -34,6 +35,7 @@ public class ProdutoModel {
     private BigDecimal valorVendaUnitario;
     @Column(name = "saldo", nullable = false)
     private BigDecimal saldo;
+    @JsonIgnore
     @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL)
     private List<MovimentacaoEstoqueModel> movimentacoesEstoque;
 

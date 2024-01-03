@@ -1,6 +1,7 @@
 package com.h2healing.schedule.controllers.produtoController;
 
 import com.h2healing.schedule.model.produto.DeletarDTO;
+import com.h2healing.schedule.model.produto.ProdutoDTO;
 import com.h2healing.schedule.model.produto.ProdutoModel;
 import com.h2healing.schedule.model.produto.RegistrarProdutoDTO;
 import com.h2healing.schedule.repository.repositoryProduto.ProdutoRepository;
@@ -12,17 +13,20 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
-
+import com.h2healing.schedule.services.produto.ProdutoService;
 @RestController
 @RequestMapping("/produtos")
 public class ProdutoController {
     @Autowired
     private ProdutoRepository repository;
+    @Autowired
+    private ProdutoService produtoService;
     @GetMapping
-    public ResponseEntity getAllProdutos(){
-        var allProdutos = repository.findAll();
-        return ResponseEntity.ok(allProdutos);
+    public ResponseEntity <List<ProdutoDTO>> getallProdutos(){
+        List<ProdutoDTO> produtosDTO = produtoService.getAllProdutosDTO();
+        return ResponseEntity.ok(produtosDTO);
     }
     @PostMapping
     public ResponseEntity registrarProduto(@RequestBody @Valid RegistrarProdutoDTO data){

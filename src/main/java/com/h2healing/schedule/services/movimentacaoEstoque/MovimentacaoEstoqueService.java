@@ -1,5 +1,6 @@
 package com.h2healing.schedule.services.movimentacaoEstoque;
 
+import com.h2healing.schedule.exception.dominio.produto.ProdutoNaoEncontradoException;
 import com.h2healing.schedule.model.estoque.MovimentacaoEstoqueDTO;
 import com.h2healing.schedule.model.estoque.MovimentacaoEstoqueModel;
 import com.h2healing.schedule.model.estoque.TipoMovimentacao;
@@ -25,6 +26,7 @@ public class MovimentacaoEstoqueService {
         ProdutoModel produto = obterProduto (entradaEstoqueDTO.codigoProduto());
         MovimentacaoEstoqueModel movimentacaoEntrada = new MovimentacaoEstoqueModel();
         movimentacaoEntrada.setProduto(produto);
+        movimentacaoEntrada.setCodigoProduto(entradaEstoqueDTO.codigoProduto());
         movimentacaoEntrada.setDataMovimentacao(LocalDateTime.now());
         movimentacaoEntrada.setQuantidade(entradaEstoqueDTO.quantidade());
         movimentacaoEntrada.setTipoMovimentacao(TipoMovimentacao.ENTRADA);
@@ -40,6 +42,7 @@ public class MovimentacaoEstoqueService {
         ProdutoModel produto = obterProduto(saidaEstoqueDTO.codigoProduto());
         MovimentacaoEstoqueModel movimentacaoSaida = new MovimentacaoEstoqueModel();
         movimentacaoSaida.setProduto(produto);
+        movimentacaoSaida.setCodigoProduto(saidaEstoqueDTO.codigoProduto());
         movimentacaoSaida.setDataMovimentacao(LocalDateTime.now());
         movimentacaoSaida.setQuantidade(saidaEstoqueDTO.quantidade());
         movimentacaoSaida.setTipoMovimentacao(TipoMovimentacao.SAIDA);
@@ -50,7 +53,7 @@ public class MovimentacaoEstoqueService {
         produtoRepository.save(produto);
     }
 
-    private ProdutoModel obterProduto(String codigoProduto)throws ProdutoNaoEncontradoException{
+    private ProdutoModel obterProduto(String codigoProduto)throws ProdutoNaoEncontradoException {
         Optional<ProdutoModel> produtoOptional = produtoRepository.findByCodigo(codigoProduto);
         if(produtoOptional.isPresent()){
             return produtoOptional.get();

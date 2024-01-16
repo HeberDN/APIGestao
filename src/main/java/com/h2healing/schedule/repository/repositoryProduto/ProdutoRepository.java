@@ -1,6 +1,7 @@
 package com.h2healing.schedule.repository.repositoryProduto;
 
 import com.h2healing.schedule.model.produto.ProdutoModel;
+import com.h2healing.schedule.model.produto.ProdutoUnicoModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 

@@ -40,7 +40,7 @@ public class JWTTokenService {
                     .verify(token)
                     .getSubject();
         } catch (JWTVerificationException exception){
-            return "";
+            throw new RuntimeException("Erro ao validar token ", exception);
         }
     }
 

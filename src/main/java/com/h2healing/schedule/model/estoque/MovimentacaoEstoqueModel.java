@@ -18,13 +18,23 @@ public class MovimentacaoEstoqueModel {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+
     @ManyToOne
     @JoinColumn(name = "produto_id", nullable = false)
     private ProdutoModel produto;
+
+    @JoinColumn(name = "produto_codigo", nullable = false)
+    private String codigoProduto;
+
     @Column(nullable = false)
     private LocalDateTime dataMovimentacao;
+
     @Column(nullable = false)
     private BigDecimal quantidade;
+
     @Enumerated(EnumType.STRING)
     private TipoMovimentacao tipoMovimentacao;
+
+    @Enumerated(EnumType.STRING)
+    private OrigemMovimentacao origemMovimentacao;
 }

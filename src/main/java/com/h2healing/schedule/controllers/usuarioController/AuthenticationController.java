@@ -7,15 +7,21 @@ import com.h2healing.schedule.model.usuario.UsuarioModel;
 import com.h2healing.schedule.repository.repositoryUsuario.UsuarioRepository;
 import com.h2healing.schedule.security.JWTTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import jakarta.validation.Valid;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("auth")
@@ -37,15 +43,21 @@ public class AuthenticationController {
         return ResponseEntity.ok(new LoginResponseDTO(token));
     }
     @PostMapping("/register")
-    public ResponseEntity register(@RequestBody @Valid RegisterDTO data){
-        if(this.usuarioRepository.findByLogin(data.login()) != null) return ResponseEntity.badRequest().build();
+    public ResponseEntity register(@RequestBody @Valid RegisterDTO data, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            List<String> erros = bindingResult.getAllErrors().stream()
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                    .collect(Collectors.toList());
+            return ResponseEntity.badRequest().body(erros);
+        }
+        if(this.usuarioRepository.findByLogin(data.login()) != null) return ResponseEntity.badRequest().body("E-mail já cadastrado");
 
         String encryptedPassword = passwordEncoder.encode(data.password());
         String passwordWithPrefix = "{bcrypt}" + encryptedPassword;
-        UsuarioModel newUser = new UsuarioModel(data.login(), passwordWithPrefix, data.role());
+        UsuarioModel newUser = new UsuarioModel(data.nome(), data.login(), passwordWithPrefix, data.role());
 
         this.usuarioRepository.save(newUser);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }

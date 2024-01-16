@@ -1,38 +1,34 @@
 package com.h2healing.schedule.controllers.produtoController;
 
-import com.h2healing.schedule.model.produto.DeletarDTO;
-import com.h2healing.schedule.model.produto.ProdutoDTO;
-import com.h2healing.schedule.model.produto.ProdutoModel;
-import com.h2healing.schedule.model.produto.RegistrarProdutoDTO;
+import com.h2healing.schedule.model.produto.*;
 import com.h2healing.schedule.repository.repositoryProduto.ProdutoRepository;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-import com.h2healing.schedule.services.produto.ProdutoService;
+import com.h2healing.schedule.services.produto.ProdutoServiceImpl;
 @RestController
 @RequestMapping("/produtos")
 public class ProdutoController {
     @Autowired
     private ProdutoRepository repository;
     @Autowired
-    private ProdutoService produtoService;
+    private ProdutoServiceImpl produtoServiceImpl;
     @GetMapping
     public ResponseEntity <List<ProdutoDTO>> getallProdutos(){
-        List<ProdutoDTO> produtosDTO = produtoService.getAllProdutosDTO();
+        List<ProdutoDTO> produtosDTO = produtoServiceImpl.getAllProdutosDTO();
         return ResponseEntity.ok(produtosDTO);
     }
     @PostMapping
-    public ResponseEntity registrarProduto(@RequestBody @Valid RegistrarProdutoDTO data){
-        ProdutoModel newProdutoModel = new ProdutoModel(data);
-        repository.save(newProdutoModel);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Produto registrado com sucesso");
+    public ResponseEntity cadastrarProduto (@RequestBody @Valid RegistrarProdutoUnicoDTO data){
+        ProdutoUnicoModel produtoUnicoModel = new ProdutoUnicoModel(data);
+        repository.save(produtoUnicoModel);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Produto registrado com sucesso " + data);
     }
     @PutMapping
     @Transactional
@@ -59,6 +55,16 @@ public class ProdutoController {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }else{
             return ResponseEntity.notFound().build();
+        }
+    }
+    @PostMapping("/kit")
+    public ResponseEntity cadastrarProdutoKit (@RequestBody @Valid RegistrarProdutoKitDTO data){
+        try{
+            ProdutoKitModel produtoKit = (ProdutoKitModel) produtoServiceImpl.cadastrarProdutoKit(data);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Produto kit registrado com sucesso: " + data);
+        }catch (Exception e)
+        {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao cadastrar produto kit " + e);
         }
     }
 }

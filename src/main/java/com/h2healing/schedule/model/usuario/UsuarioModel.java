@@ -59,7 +59,8 @@ public class UsuarioModel implements UserDetails {
 
     public void setPassword(String password) { this.password = password; }
 
-    public UsuarioModel(String login, String password, UsuarioRole role){
+    public UsuarioModel(String nome, String login, String password, UsuarioRole role){
+        this.nome = nome;
         this.login = login;
         this.password = password;
         this.role = role;

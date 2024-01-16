@@ -5,5 +5,9 @@ import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 
-public record MovimentacaoEstoqueDTO(@NotBlank String codigoProduto, @NotNull BigDecimal quantidade) {
+public record MovimentacaoEstoqueDTO(
+        @NotBlank String codigoProduto,
+        @NotNull BigDecimal quantidade,
+        @NotNull OrigemMovimentacao origemMovimentacao
+) {
 }

@@ -2,7 +2,7 @@ package com.h2healing.schedule.controllers.movimentacaoEstoqueController;
 
 import com.h2healing.schedule.model.estoque.MovimentacaoEstoqueDTO;
 import com.h2healing.schedule.services.movimentacaoEstoque.MovimentacaoEstoqueService;
-import com.h2healing.schedule.services.movimentacaoEstoque.ProdutoNaoEncontradoException;
+import com.h2healing.schedule.exception.dominio.produto.ProdutoNaoEncontradoException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

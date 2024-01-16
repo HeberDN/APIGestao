@@ -10,6 +10,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
@@ -17,34 +18,24 @@ import java.util.List;
 @Table(name = "produtos")
 @Entity(name = "produtos")
 @EqualsAndHashCode(of = "id")
-@Getter
-@Setter
-public class ProdutoModel {
+@Inheritance(strategy = InheritanceType.JOINED)
+public abstract class ProdutoModel {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Column(name = "codigo", unique = true)
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
+    @Column(name = "codigo", unique = true, nullable = false)
     private String codigo;
     @Column(name = "nome_produto", nullable = false)
     private String nomeProduto;
     @Column(name = "unidade", nullable = false)
     private String unidade;
-    @Column(name = "custo_unitario", nullable = false)
+    @Column(name = "custo_unitario")
     private BigDecimal custoUnitario;
-    @Column(name = "valor_venda", nullable = false)
+    @Column(name = "valor_venda")
     private BigDecimal valorVendaUnitario;
     @Column(name = "saldo", nullable = false)
     private BigDecimal saldo;
-    @JsonIgnore
-    @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL)
-    private List<MovimentacaoEstoqueModel> movimentacoesEstoque;
-
-    public ProdutoModel (RegistrarProdutoDTO registrarProdutoDTO){
-        this.codigo = registrarProdutoDTO.codigo();
-        this.nomeProduto = registrarProdutoDTO.nomeProduto();
-        this.unidade = registrarProdutoDTO.unidade();
-        this.custoUnitario = registrarProdutoDTO.custoUnitario();
-        this.valorVendaUnitario = registrarProdutoDTO.valorVendaUnitario();
-        this.saldo = registrarProdutoDTO.saldo();
-    }
+    @Enumerated(EnumType.STRING)
+    @Column(name = "classificacao_produto")
+    private ClassificacaoProduto classificacaoProduto;
 }

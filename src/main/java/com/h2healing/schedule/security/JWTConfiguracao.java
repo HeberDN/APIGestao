@@ -25,7 +25,7 @@ public class JWTConfiguracao  {
     @Autowired
     JWTSecurityFilter securityFilter;
     @Bean
-    public SecurityFilterChain sucurityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -38,6 +38,7 @@ public class JWTConfiguracao  {
                         .requestMatchers(HttpMethod.POST,"/produtos").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT,"/produtos").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE,"/produtos").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST,"/produtos/kit").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST,"/movimentacoes-estoque").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )

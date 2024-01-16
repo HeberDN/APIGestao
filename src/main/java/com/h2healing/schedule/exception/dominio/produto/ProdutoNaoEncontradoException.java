@@ -1,4 +1,4 @@
-package com.h2healing.schedule.services.movimentacaoEstoque;
+package com.h2healing.schedule.exception.dominio.produto;
 
 public class ProdutoNaoEncontradoException extends RuntimeException {
     public ProdutoNaoEncontradoException(String codigoProduto) {

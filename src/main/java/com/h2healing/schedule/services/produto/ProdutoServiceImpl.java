@@ -22,6 +22,9 @@ public class ProdutoServiceImpl implements ProdutoService {
     @Override
     @Transactional
     public ProdutoUnicoModel cadastrarProduto (RegistrarProdutoUnicoDTO data){
+        if (produtoRepository.findByCodigo(data.codigo()).isPresent()) {
+            throw new ProdutoException("Código de produto já existe: " + data.codigo());
+        }
         ProdutoUnicoModel produto = new ProdutoUnicoModel(data);
         return produtoRepository.save(produto);
     }

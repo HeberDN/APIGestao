@@ -33,8 +33,8 @@ public class MovimentacaoEstoqueModel {
     private BigDecimal quantidade;
 
     @Enumerated(EnumType.STRING)
-    private TipoMovimentacao tipoMovimentacao;
+    private OrigemMovimentacao origemMovimentacao;
 
     @Enumerated(EnumType.STRING)
-    private OrigemMovimentacao origemMovimentacao;
+    private TipoMovimentacao tipoMovimentacao;
 }

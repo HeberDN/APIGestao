@@ -30,6 +30,7 @@ public class MovimentacaoEstoqueService {
         movimentacaoEntrada.setDataMovimentacao(LocalDateTime.now());
         movimentacaoEntrada.setQuantidade(entradaEstoqueDTO.quantidade());
         movimentacaoEntrada.setTipoMovimentacao(TipoMovimentacao.ENTRADA);
+        movimentacaoEntrada.setOrigemMovimentacao(entradaEstoqueDTO.origemMovimentacao());
         // Persiste a movimentação de estoque
         estoqueRepository.save(movimentacaoEntrada);
         // Atualiza o saldo no produto
@@ -46,6 +47,7 @@ public class MovimentacaoEstoqueService {
         movimentacaoSaida.setDataMovimentacao(LocalDateTime.now());
         movimentacaoSaida.setQuantidade(saidaEstoqueDTO.quantidade());
         movimentacaoSaida.setTipoMovimentacao(TipoMovimentacao.SAIDA);
+        movimentacaoSaida.setOrigemMovimentacao(saidaEstoqueDTO.origemMovimentacao());
         // Persiste a movimentação de estoque
         estoqueRepository.save(movimentacaoSaida);
         // Atualiza o saldo no produto

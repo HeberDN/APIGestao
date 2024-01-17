@@ -1,5 +1,6 @@
 package com.h2healing.schedule.controllers.produtoController;
 
+import com.h2healing.schedule.exception.dominio.produto.ProdutoException;
 import com.h2healing.schedule.model.produto.*;
 import com.h2healing.schedule.repository.repositoryProduto.ProdutoRepository;
 import jakarta.transaction.Transactional;
@@ -26,9 +27,12 @@ public class ProdutoController {
     }
     @PostMapping
     public ResponseEntity cadastrarProduto (@RequestBody @Valid RegistrarProdutoUnicoDTO data){
-        ProdutoUnicoModel produtoUnicoModel = new ProdutoUnicoModel(data);
-        repository.save(produtoUnicoModel);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Produto registrado com sucesso " + data);
+        try{
+            ProdutoUnicoModel produtoUnicoModel = produtoServiceImpl.cadastrarProduto(data);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Produto registrado com sucesso "+ data);
+        }catch (ProdutoException e){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        }
     }
     @PutMapping
     @Transactional

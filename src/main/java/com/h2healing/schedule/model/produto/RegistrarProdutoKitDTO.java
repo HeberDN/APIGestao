@@ -10,5 +10,7 @@ public record RegistrarProdutoKitDTO (
         BigDecimal custoUnitario,
         BigDecimal valorVendaUnitario,
         ClassificacaoProduto classificacaoProduto,
-        List<ProdutoUnicoModel> produtosNoKit
-){}
+        List<ItemProdutoKitDTO> produtosNoKit
+){
+    public static record ItemProdutoKitDTO(String codigo, BigDecimal quantidadeNoKit) {}
+}

@@ -13,16 +13,11 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Data
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 public class ProdutoKitModel extends ProdutoModel {
-    @ManyToMany
-    @JoinTable(
-            name = "produto_kit",
-            joinColumns = @JoinColumn(name = "kit_id"),
-            inverseJoinColumns =@JoinColumn(name = "produto_id")
-    )
-    private List<ProdutoUnicoModel> produtosNoKit;
+
+    @OneToMany(mappedBy = "kit", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Composicao> produtosNoKit;
 }

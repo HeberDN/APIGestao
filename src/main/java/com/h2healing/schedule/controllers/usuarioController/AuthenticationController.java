@@ -1,9 +1,6 @@
 package com.h2healing.schedule.controllers.usuarioController;
 
-import com.h2healing.schedule.model.usuario.AuthenticationDTO;
-import com.h2healing.schedule.model.usuario.LoginResponseDTO;
-import com.h2healing.schedule.model.usuario.RegisterDTO;
-import com.h2healing.schedule.model.usuario.UsuarioModel;
+import com.h2healing.schedule.model.usuario.*;
 import com.h2healing.schedule.repository.repositoryUsuario.UsuarioRepository;
 import com.h2healing.schedule.security.JWTTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,12 +49,11 @@ public class AuthenticationController {
         }
         if(this.usuarioRepository.findByLogin(data.login()) != null) return ResponseEntity.badRequest().body("E-mail já cadastrado");
 
-        String encryptedPassword = passwordEncoder.encode(data.password());
-        String passwordWithPrefix = "{bcrypt}" + encryptedPassword;
-        UsuarioModel newUser = new UsuarioModel(data.nome(), data.login(), passwordWithPrefix, data.role());
-
+        String encryptedPassword = "{bcrypt}" + passwordEncoder.encode(data.password());
+        UsuarioModel newUser = new UsuarioModel(data.nome(), data.login(), encryptedPassword, data.role());
         this.usuarioRepository.save(newUser);
 
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        UsuarioResponseDTO responseDTO = new UsuarioResponseDTO(newUser.getId(), newUser.getNome(), newUser.getLogin());
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
     }
 }

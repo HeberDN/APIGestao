@@ -105,10 +105,8 @@ public class ClienteValidationService {
                 peso = 2;
             }
         }
-
         int resto = soma % 11;
         int digito = (resto < 2) ? 0 : (11 - resto);
-
         return digito;
     }
 }

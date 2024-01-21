@@ -5,6 +5,7 @@ import com.h2healing.schedule.model.cliente.ClienteModel;
 import com.h2healing.schedule.repository.repositoryCliente.ClienteRepository;
 import com.h2healing.schedule.services.cliente.ClienteValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -48,23 +49,34 @@ public class ClienteController {
         if (!validationErrors.isEmpty()) {
             return new ResponseEntity<>(validationErrors, HttpStatus.BAD_REQUEST);
         }
-        ClienteModel novoCliente = new ClienteModel(
-                UUID.randomUUID(),
-                clienteDTO.nome(),
-                clienteDTO.documento(),
-                clienteDTO.telefone(),
-                clienteDTO.email()
-        );
-        clienteRepository.save(novoCliente);
-        return new ResponseEntity<>(novoCliente, HttpStatus.CREATED);
+        try{
+            ClienteModel novoCliente = new ClienteModel(
+                    UUID.randomUUID(),
+                    clienteDTO.nome(),
+                    clienteDTO.documento(),
+                    clienteDTO.telefone(),
+                    clienteDTO.email()
+            );
+            clienteRepository.save(novoCliente);
+            return new ResponseEntity<>(novoCliente, HttpStatus.CREATED);
+        }catch (DataIntegrityViolationException e){
+            String mensagemErro = "O documento já esta cadastrado";
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mensagemErro);
+        }
     }
 
     // Endpoint para atualizar um cliente existente
     @PutMapping("/{id}")
-    public ResponseEntity<ClienteModel> updateCliente(@PathVariable UUID id, @RequestBody ClienteDTO clienteDTO) {
+    public ResponseEntity<?> updateCliente(@PathVariable UUID id, @RequestBody ClienteDTO clienteDTO) {
+
         Optional<ClienteModel> clienteOptional = clienteRepository.findById(id);
 
         if (clienteOptional.isPresent()) {
+            List<String> validationErrors = clienteValidationService.validarCliente(clienteDTO);
+
+            if (!validationErrors.isEmpty()) {
+                return new ResponseEntity<>(validationErrors, HttpStatus.BAD_REQUEST);
+            }
             ClienteModel cliente = clienteOptional.get();
             cliente.setNome(clienteDTO.nome());
             cliente.setDocumento(clienteDTO.documento());

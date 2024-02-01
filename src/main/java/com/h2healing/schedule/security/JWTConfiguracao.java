@@ -44,6 +44,8 @@ public class JWTConfiguracao  {
                         .requestMatchers(HttpMethod.POST,"/clientes").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT,"/clientes").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE,"/clientes").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST,"/vendas").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET,"/vendas").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

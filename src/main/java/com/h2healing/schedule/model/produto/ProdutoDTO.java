@@ -7,6 +7,5 @@ public record ProdutoDTO(
         String nomeProduto,
         String unidade,
         BigDecimal custoUnitario,
-        BigDecimal valorUnitario,
-        BigDecimal saldo) {
+        BigDecimal valorUnitario) {
 }

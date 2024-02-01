@@ -33,8 +33,6 @@ public abstract class ProdutoModel {
     private BigDecimal custoUnitario;
     @Column(name = "valor_venda")
     private BigDecimal valorVendaUnitario;
-    @Column(name = "saldo", nullable = false)
-    private BigDecimal saldo;
     @Enumerated(EnumType.STRING)
     @Column(name = "classificacao_produto")
     private ClassificacaoProduto classificacaoProduto;

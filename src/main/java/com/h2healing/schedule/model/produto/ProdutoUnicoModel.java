@@ -1,6 +1,7 @@
 package com.h2healing.schedule.model.produto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.h2healing.schedule.model.estoque.MovimentacaoEstoqueModel;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -19,6 +20,8 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 public class ProdutoUnicoModel extends ProdutoModel {
+    @Column(name = "saldo", nullable = false)
+    private BigDecimal saldo;
     @JsonIgnore
     @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL)
     private List<MovimentacaoEstoqueModel> movimentacoesEstoque;

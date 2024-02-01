@@ -1,5 +1,6 @@
 package com.h2healing.schedule.services.movimentacaoEstoque;
 
+import com.h2healing.schedule.exception.dominio.produto.ProdutoException;
 import com.h2healing.schedule.exception.dominio.produto.ProdutoNaoEncontradoException;
 import com.h2healing.schedule.model.estoque.MovimentacaoEstoqueDTO;
 import com.h2healing.schedule.model.estoque.MovimentacaoEstoqueModel;
@@ -29,35 +30,49 @@ public class MovimentacaoEstoqueService {
     public void registrarEntradaEstoque(MovimentacaoEstoqueDTO entradaEstoqueDTO){
         System.out.println(LocalDateTime.now() + " Chamado registrarEntradaEstoque");
         ProdutoModel produto = obterProduto (entradaEstoqueDTO.codigoProduto());
-        MovimentacaoEstoqueModel movimentacaoEntrada = new MovimentacaoEstoqueModel();
-        movimentacaoEntrada.setProduto(produto);
-        movimentacaoEntrada.setCodigoProduto(entradaEstoqueDTO.codigoProduto());
-        movimentacaoEntrada.setDataMovimentacao(LocalDateTime.now());
-        movimentacaoEntrada.setQuantidade(entradaEstoqueDTO.quantidade());
-        movimentacaoEntrada.setTipoMovimentacao(TipoMovimentacao.ENTRADA);
-        movimentacaoEntrada.setOrigemMovimentacao(entradaEstoqueDTO.origemMovimentacao());
-        // Persiste a movimentação de estoque
-        estoqueRepository.save(movimentacaoEntrada);
-        // Atualiza o saldo no produto
-        produto.setSaldo(produto.getSaldo().add(entradaEstoqueDTO.quantidade()));
-        produtoRepository.save(produto);
+        if(produto instanceof ProdutoUnicoModel){
+            ProdutoUnicoModel produtoUnico = (ProdutoUnicoModel) produto;
+            MovimentacaoEstoqueModel movimentacaoEntrada = new MovimentacaoEstoqueModel();
+            movimentacaoEntrada.setProduto(produto);
+            movimentacaoEntrada.setCodigoProduto(entradaEstoqueDTO.codigoProduto());
+            movimentacaoEntrada.setDataMovimentacao(LocalDateTime.now());
+            movimentacaoEntrada.setQuantidade(entradaEstoqueDTO.quantidade());
+            movimentacaoEntrada.setTipoMovimentacao(TipoMovimentacao.ENTRADA);
+            movimentacaoEntrada.setOrigemMovimentacao(entradaEstoqueDTO.origemMovimentacao());
+            // Persiste a movimentação de estoque
+            estoqueRepository.save(movimentacaoEntrada);
+            // Atualiza o saldo no produto
+            produtoUnico.setSaldo(produtoUnico.getSaldo().add(entradaEstoqueDTO.quantidade()));
+            produtoRepository.save(produto);
+        }else{
+            //Não é um produtounico
+            throw new ProdutoException("Produto não tem saldo controlado");
+        }
+
     }
     @Transactional
     public void registrarSaidaEstoque(MovimentacaoEstoqueDTO saidaEstoqueDTO){
         System.out.println(LocalDateTime.now() + " Chamado registrarSaidaEstoque");
         ProdutoModel produto = obterProduto(saidaEstoqueDTO.codigoProduto());
-        MovimentacaoEstoqueModel movimentacaoSaida = new MovimentacaoEstoqueModel();
-        movimentacaoSaida.setProduto(produto);
-        movimentacaoSaida.setCodigoProduto(saidaEstoqueDTO.codigoProduto());
-        movimentacaoSaida.setDataMovimentacao(LocalDateTime.now());
-        movimentacaoSaida.setQuantidade(saidaEstoqueDTO.quantidade());
-        movimentacaoSaida.setTipoMovimentacao(TipoMovimentacao.SAIDA);
-        movimentacaoSaida.setOrigemMovimentacao(saidaEstoqueDTO.origemMovimentacao());
-        // Persiste a movimentação de estoque
-        estoqueRepository.save(movimentacaoSaida);
-        // Atualiza o saldo no produto
-        produto.setSaldo(produto.getSaldo().subtract(saidaEstoqueDTO.quantidade()));
-        produtoRepository.save(produto);
+
+        if(produto instanceof ProdutoUnicoModel) {
+            ProdutoUnicoModel produtoUnico = (ProdutoUnicoModel) produto;
+            MovimentacaoEstoqueModel movimentacaoSaida = new MovimentacaoEstoqueModel();
+            movimentacaoSaida.setProduto(produto);
+            movimentacaoSaida.setCodigoProduto(saidaEstoqueDTO.codigoProduto());
+            movimentacaoSaida.setDataMovimentacao(LocalDateTime.now());
+            movimentacaoSaida.setQuantidade(saidaEstoqueDTO.quantidade());
+            movimentacaoSaida.setTipoMovimentacao(TipoMovimentacao.SAIDA);
+            movimentacaoSaida.setOrigemMovimentacao(saidaEstoqueDTO.origemMovimentacao());
+            // Persiste a movimentação de estoque
+            estoqueRepository.save(movimentacaoSaida);
+            // Atualiza o saldo no produto
+            produtoUnico.setSaldo(produtoUnico.getSaldo().subtract(saidaEstoqueDTO.quantidade()));
+            produtoRepository.save(produto);
+        } else{
+        //Não é um produtounico
+        throw new ProdutoException("Produto não tem saldo controlado");
+    }
     }
     @Transactional
     public void registrarBaixaProdutoKit(MovimentacaoEstoqueDTO baixarProdutoKitDTO) {
@@ -91,10 +106,16 @@ public class MovimentacaoEstoqueService {
     }
 
 
-    private ProdutoModel obterProduto(String codigoProduto)throws ProdutoNaoEncontradoException {
+    private ProdutoUnicoModel obterProduto(String codigoProduto)throws ProdutoNaoEncontradoException {
         Optional<ProdutoModel> produtoOptional = produtoRepository.findByCodigo(codigoProduto);
         if(produtoOptional.isPresent()){
-            return produtoOptional.get();
+            ProdutoModel produto = produtoOptional.get();
+            if(produto instanceof ProdutoUnicoModel){
+                return (ProdutoUnicoModel) produto;
+            }else{
+                throw new ProdutoNaoEncontradoException("Não é um ProdutoUnico");
+            }
+
         }else{
             throw new ProdutoNaoEncontradoException(codigoProduto);
         }

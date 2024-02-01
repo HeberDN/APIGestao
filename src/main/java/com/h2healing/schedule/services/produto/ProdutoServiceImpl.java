@@ -49,7 +49,6 @@ public class ProdutoServiceImpl implements ProdutoService {
         produtoKit.setCustoUnitario(data.custoUnitario());
         produtoKit.setValorVendaUnitario(data.valorVendaUnitario());
         produtoKit.setClassificacaoProduto(data.classificacaoProduto());
-        produtoKit.setSaldo(BigDecimal.valueOf(0));
         produtoKit.setProdutosNoKit(produtosNoKit);
 
         for (RegistrarProdutoKitDTO.ItemProdutoKitDTO itemDTO : data.produtosNoKit()) {
@@ -103,7 +102,6 @@ public class ProdutoServiceImpl implements ProdutoService {
                 produtoModel.getNomeProduto(),
                 produtoModel.getUnidade(),
                 produtoModel.getCustoUnitario(),
-                produtoModel.getValorVendaUnitario(),
-                produtoModel.getSaldo());
+                produtoModel.getValorVendaUnitario());
     }
 }

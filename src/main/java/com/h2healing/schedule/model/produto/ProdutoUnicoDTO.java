@@ -3,15 +3,26 @@ package com.h2healing.schedule.model.produto;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import java.math.BigDecimal;
+
 @JsonTypeName("produtoUnico")
-public record ProdutoUnicoDTO(
-        String codigo,
-        String nomeProduto,
-        String unidade,
-        BigDecimal custoUnitario,
-        BigDecimal valorUnitario,
-        BigDecimal saldo
-) implements InterfaceProdutoDTO{
+public class ProdutoUnicoDTO implements InterfaceProdutoDTO {
+
+    private String codigo;
+    private String nomeProduto;
+    private String unidade;
+    private BigDecimal custoUnitario;
+    private BigDecimal valorUnitario;
+    private BigDecimal saldo;
+
+    public ProdutoUnicoDTO(String codigo, String nomeProduto, String unidade, BigDecimal custoUnitario, BigDecimal valorUnitario, BigDecimal saldo) {
+        this.codigo = codigo;
+        this.nomeProduto = nomeProduto;
+        this.unidade = unidade;
+        this.custoUnitario = custoUnitario;
+        this.valorUnitario = valorUnitario;
+        this.saldo = saldo;
+    }
+
     @Override
     public String getTipo() {
         return "produtoUnico";
@@ -40,10 +51,6 @@ public record ProdutoUnicoDTO(
     @Override
     public BigDecimal getValorUnitario() {
         return valorUnitario;
-    }
-
-    public BigDecimal getSaldo() {
-        return saldo;
     }
 
     @Override

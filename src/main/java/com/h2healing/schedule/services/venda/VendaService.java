@@ -47,10 +47,10 @@ public class VendaService {
 
     private VendaModel criarNovaVendaModel(VendaDTO venda){
         VendaModel vendaModel = new VendaModel();
-        vendaModel.setCliente(venda.cliente());
-        vendaModel.setProdutos(venda.produtos().stream().map(InterfaceProdutoDTO::toProdutoModel).collect(Collectors.toList()));
-        vendaModel.setFormaDePagamento(venda.formaDePagamento());
-        vendaModel.setObservacao(venda.observacao());
+        vendaModel.setCliente(venda.getCliente());
+        vendaModel.setProdutos(venda.getProdutos().stream().map(InterfaceProdutoDTO::toProdutoModel).collect(Collectors.toList()));
+        vendaModel.setFormaDePagamento(venda.getFormaDePagamento());
+        vendaModel.setObservacao(venda.getObservacao());
 
         return vendaModel;
     }

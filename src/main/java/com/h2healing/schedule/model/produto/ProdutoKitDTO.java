@@ -6,14 +6,25 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
+
 @JsonTypeName("produtoKit")
-public record ProdutoKitDTO(
-        String codigo,
-        String nomeProduto,
-        String unidade,
-        BigDecimal custoUnitario,
-        BigDecimal valorUnitario,
-        List<InterfaceProdutoDTO> produtosNoKit) implements InterfaceProdutoDTO {
+public class ProdutoKitDTO implements InterfaceProdutoDTO {
+
+    private String codigo;
+    private String nomeProduto;
+    private String unidade;
+    private BigDecimal custoUnitario;
+    private BigDecimal valorUnitario;
+    private List<InterfaceProdutoDTO> produtosNoKit;
+
+    public ProdutoKitDTO(String codigo, String nomeProduto, String unidade, BigDecimal custoUnitario, BigDecimal valorUnitario, List<InterfaceProdutoDTO> produtosNoKit) {
+        this.codigo = codigo;
+        this.nomeProduto = nomeProduto;
+        this.unidade = unidade;
+        this.custoUnitario = custoUnitario;
+        this.valorUnitario = valorUnitario;
+        this.produtosNoKit = produtosNoKit;
+    }
 
     @Override
     public String getTipo() {
@@ -44,7 +55,6 @@ public record ProdutoKitDTO(
     public BigDecimal getValorUnitario() {
         return valorUnitario;
     }
-
 
     @Override
     public ProdutoModel toProdutoModel() {
